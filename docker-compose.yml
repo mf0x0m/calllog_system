@@ -1,0 +1,35 @@
+# docker-compose.yml
+
+services:
+  frontend:
+    build: 
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        BUILDKIT_INLINE_CACHE: 1
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - VITE_API_URL=http://localhost:8000
+    command: ["sleep", "infinity"]  # サーバー起動せずにコンテナのみ維持
+
+  backend:
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
+      args:
+        BUILDKIT_INLINE_CACHE: 1
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+      - ./backend/data:/app/data
+      - ./backend/logs:/app/logs
+    environment:
+      - DEBUG=True
+      - ENVIRONMENT=development
+      - LOG_LEVEL=DEBUG
+    command: ["sleep", "infinity"]  # サーバー起動せずにコンテナのみ維持

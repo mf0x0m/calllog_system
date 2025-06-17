@@ -1,0 +1,11 @@
+# backend/requirements.txt
+fastapi
+uvicorn
+pandas
+openpyxl
+watchdog
+python-dotenv
+pydantic
+pydantic_settings
+jpholiday
+playwright

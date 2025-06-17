@@ -1,0 +1,16 @@
+2025-06-17 07:43:27,014 - service.staff_map - INFO - スタッフマップを読み込みました: /app/data/staffMap.json
+2025-06-17 07:43:27,015 - service.auth_service - INFO - ログイン試行: suc1588
+2025-06-17 07:43:32,669 - service.browser_manager - INFO - Login successful: suc1588
+2025-06-17 07:43:32,669 - service.auth_service - INFO - ログイン成功: suc1588 / 大野 真澄
+2025-06-17 07:43:49,486 - routers.training_search - WARNING - 当日のCSVファイルが存在しません: /app/downloads/250617_webinsource_merged.csv
+2025-06-17 07:43:49,495 - routers.training_search - WARNING - 当日のCSVファイルが存在しません: /app/downloads/250617_webinsource_merged.csv
+2025-06-17 07:43:51,545 - routers.call_log - INFO - 受電履歴取得リクエスト
+2025-06-17 07:43:51,546 - service.call_log_service - INFO - Starting file merge with exclusive lock
+2025-06-17 07:43:51,553 - service.call_log_service - INFO - On-demand merge completed: 1 records from 1 operator files
+2025-06-17 07:43:51,554 - service.call_log_service - DEBUG - Merge lock released
+2025-06-17 07:43:51,554 - routers.call_log - INFO - 受電履歴取得結果: 1件
+2025-06-17 07:43:51,558 - routers.call_log - INFO - 受電履歴取得リクエスト
+2025-06-17 07:43:51,558 - service.call_log_service - INFO - Starting file merge with exclusive lock
+2025-06-17 07:43:51,559 - service.call_log_service - INFO - On-demand merge completed: 1 records from 1 operator files
+2025-06-17 07:43:51,559 - service.call_log_service - DEBUG - Merge lock released
+2025-06-17 07:43:51,559 - routers.call_log - INFO - 受電履歴取得結果: 1件

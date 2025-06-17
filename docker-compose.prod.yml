@@ -1,0 +1,39 @@
+# docker-compose.prod.yml
+version: '3.9'
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.prod
+    ports:
+      - "80:80"
+    restart: unless-stopped
+    environment:
+      - VITE_API_URL=https://api.yourdomain.com
+    depends_on:
+      - backend
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.prod
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+    environment:
+      - DEBUG=False
+      - ENVIRONMENT=production
+      - LOG_LEVEL=WARNING
+      - CORS_ORIGINS=https://yourdomain.com,https://www.yourdomain.com
+    volumes:
+      - ./backend/data:/app/data:ro
+      - backend_logs:/app/logs
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  backend_logs:

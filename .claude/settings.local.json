@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(docker image rm:*)",
+      "Bash(docker-compose:*)"
+    ],
+    "deny": []
+  }
+}
