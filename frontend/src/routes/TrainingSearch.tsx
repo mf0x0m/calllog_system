@@ -15,7 +15,8 @@ interface DetailContent {
 export default function TrainingSearch() {
   const [data, setData] = useState<TrainingRecord[]>([])
   const [loading, setLoading] = useState(true)
-  const [filters, setFilters] = useState<{ [key: string]: string }>({})
+  const [dateFilter, setDateFilter] = useState("")
+  const [freewordFilter, setFreewordFilter] = useState("")
   const [modalOpen, setModalOpen] = useState(false)
   const [modalContent, setModalContent] = useState<DetailContent | null>(null)
   const [loadingDetail, setLoadingDetail] = useState(false)
@@ -41,8 +42,8 @@ export default function TrainingSearch() {
     受電履歴: "w-[80px]",
     Web連携ID: "w-[90px]",
     開催日: "w-[85px]",
-    時間: "w-[100px]",
-    会場名: "w-[100px]",
+    時間: "w-[105px]",
+    会場名: "w-[115px]",
     ROOM: "w-[60px]",
     講師: "w-[95px]",
     ふりがな: "w-[120px]",
@@ -82,11 +83,20 @@ export default function TrainingSearch() {
         String.fromCharCode(s.charCodeAt(0) + 0x60)
       )
 
-  const filteredData = Array.isArray(data) ? data.filter((row) =>
-    Object.entries(filters).every(([key, value]) =>
-      normalize(row[key] || "").includes(normalize(value))
-    )
-  ) : []
+  const filteredData = Array.isArray(data) ? data.filter((row) => {
+    // 日付フィルター (YYYY-MM-DD形式で完全一致または部分一致)
+    const dateMatch = !dateFilter || 
+      (row["開催日"] || "").replace(/\//g, '-').includes(dateFilter) ||
+      (row["開催日"] || "").includes(dateFilter.replace(/-/g, '/'))
+    
+    // フリーワードフィルター（全列対象）
+    const freewordMatch = !freewordFilter || 
+      Object.values(row).some(value => 
+        normalize(value || "").includes(normalize(freewordFilter))
+      )
+    
+    return dateMatch && freewordMatch
+  }) : []
 
   const handleDoubleClick = async (record: TrainingRecord) => {
     if (loadingDetail) return
@@ -132,7 +142,7 @@ export default function TrainingSearch() {
 
 
   return (
-    <div className="p-4 relative">
+    <div className="relative">
       {loadingDetail && (
         <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center">
           <div className="bg-white p-6 rounded shadow text-center">
@@ -143,32 +153,57 @@ export default function TrainingSearch() {
         </div>
       )}
 
-      <div className="overflow-auto border rounded">
+      {/* 検索フィルター */}
+      <div className="bg-gray-50 p-3 border-b flex gap-4 items-center">
+        <div className="flex items-center gap-2">
+          <input
+            type="date"
+            className="px-3 py-1 text-sm border rounded-md w-36"
+            value={dateFilter}
+            onChange={(e) => setDateFilter(e.target.value)}
+            title="開催日で絞り込み"
+          />
+          {dateFilter && (
+            <button
+              onClick={() => setDateFilter("")}
+              className="text-gray-400 hover:text-gray-600 text-sm"
+              title="日付フィルターをクリア"
+            >
+              ✕
+            </button>
+          )}
+        </div>
+        <div className="flex items-center gap-2">
+          <input
+            type="text"
+            className="px-3 py-1 text-sm border rounded-md w-60"
+            placeholder="🔍 研修名、講師名、会場名などで検索..."
+            value={freewordFilter}
+            onChange={(e) => setFreewordFilter(e.target.value)}
+          />
+          {freewordFilter && (
+            <button
+              onClick={() => setFreewordFilter("")}
+              className="text-gray-400 hover:text-gray-600 text-sm"
+              title="検索をクリア"
+            >
+              ✕
+            </button>
+          )}
+        </div>
+        <div className="text-xs text-gray-500">
+          {filteredData.length} 件表示
+        </div>
+      </div>
+
+      <div className="overflow-auto">
         <table className="w-full table-fixed text-sm">
           <thead className="bg-gray-100">
             <tr>
               {columnOrder.map((key, idx) => (
                 <th
                   key={idx}
-                  className={`px-2 py-1 border whitespace-nowrap ${fixedWidths[key] || ""}`}
-                >
-                  <input
-                    type="text"
-                    className="w-full px-1 py-0.5 text-xs border rounded"
-                    placeholder="🔍"
-                    value={filters[key] || ""}
-                    onChange={(e) =>
-                      setFilters((prev) => ({ ...prev, [key]: e.target.value }))
-                    }
-                  />
-                </th>
-              ))}
-            </tr>
-            <tr className="bg-gray-200">
-              {columnOrder.map((key, idx) => (
-                <th
-                  key={idx}
-                  className={`px-2 py-1 border whitespace-nowrap ${fixedWidths[key] || ""}`}
+                  className={`px-2 py-2 border whitespace-nowrap font-medium text-gray-700 ${fixedWidths[key] || ""}`}
                 >
                   {key}
                 </th>

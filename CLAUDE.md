@@ -6,21 +6,35 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ### Docker Development (推奨)
 - `make dev` または `docker-compose up` - 開発環境を起動
+- `make build` - Dockerイメージを段階的にビルド（推奨）
+- `make build-parallel` - 並行ビルド（リスクあり）
+- `make build-frontend` - フロントエンドのみビルド
+- `make build-backend` - バックエンドのみビルド
 - `make logs` - ログを表示
 - `make down` - 開発環境を停止
 - `make clean` - コンテナとボリュームを削除
 
 ### 本番環境
-- `make prod` または `docker-compose -f docker-compose.prod.yml up` - 本番環境を起動
+- `make prod` - 本番環境をビルドして起動
+- `make prod-build` - 本番環境のDockerイメージをビルド
+- `make prod-up` - 本番環境を起動
+- `make prod-down` - 本番環境を停止
 
 ### ローカル開発
 - Frontend: `cd frontend && npm run dev` (port 5173)
 - Backend: `cd backend && uvicorn main:app --reload` (port 8000)
 - Frontend lint: `cd frontend && npm run lint`
+- Frontend build: `cd frontend && npm run build`
+- Frontend preview: `cd frontend && npm run preview`
+
+### テスト・品質チェック
+- Frontend TypeScript check: `cd frontend && npx tsc -b`
+- Frontend ESLint: `cd frontend && npx eslint .`
 
 ### 環境設定
 - Backend環境変数: `backend/.env` (`.env.example`を参考)
 - フロントエンドAPI URL: `VITE_API_URL` 環境変数で設定
+- Playwright初回セットアップ: `cd backend && python -m playwright install`
 
 ## Architecture Overview
 

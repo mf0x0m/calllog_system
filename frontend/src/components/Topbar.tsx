@@ -12,21 +12,16 @@ export default function Topbar() {
   }
 
   const links = [
-    { to: "/home", label: "ホーム", color: "bg-pink-200", hoverColor: "hover:bg-pink-300" },
-    { to: "/trainingsearch", label: "研修検索", color: "bg-yellow-200", hoverColor: "hover:bg-yellow-300" },
-    { to: "/calllog-history", label: "📞 受電履歴", color: "bg-green-200", hoverColor: "hover:bg-green-300" },
+    { to: "/home", label: "ホーム", bgColor: "bg-pink-400", borderColor: "border-pink-500", textColor: "text-white" },
+    { to: "/trainingsearch", label: "研修検索", bgColor: "bg-yellow-400", borderColor: "border-yellow-500", textColor: "text-gray-800" },
+    { to: "/calllog-history", label: "📞 受電履歴", bgColor: "bg-green-400", borderColor: "border-green-500", textColor: "text-white" },
   ]
 
   return (
-    <div className="bg-gray-100 border-b border-gray-300 shadow-sm">
-      <div className="flex items-center justify-between px-6 py-3">
-        {/* ロゴ・タイトル */}
-        <div className="flex items-center space-x-4">
-          <h1 className="text-xl font-bold text-gray-800">📞 CallLog System</h1>
-        </div>
-
-        {/* ナビゲーションリンク */}
-        <div className="flex items-center space-x-2">
+    <div className="bg-white border-b border-gray-200">
+      <div className="flex items-stretch justify-between px-4 h-8">
+        {/* ナビゲーションリンク - 左寄せ */}
+        <div className="flex items-stretch">
           {links.map((link) => {
             const isActive = location.pathname === link.to
             return (
@@ -34,10 +29,10 @@ export default function Topbar() {
                 key={link.to}
                 to={link.to}
                 className={`
-                  px-4 py-2 rounded-md font-semibold text-sm text-gray-700 transition-all duration-200
+                  flex items-center px-4 font-medium text-sm transition-colors duration-200 border-b-2 
                   ${isActive 
-                    ? `${link.color} shadow-md transform scale-105` 
-                    : `bg-white ${link.hoverColor} hover:shadow-md hover:transform hover:scale-105`
+                    ? `${link.bgColor} ${link.borderColor} ${link.textColor} font-semibold` 
+                    : `border-transparent text-gray-700 hover:border-gray-300 hover:bg-gray-50`
                   }
                 `}
               >
@@ -48,11 +43,11 @@ export default function Topbar() {
         </div>
 
         {/* ユーザー情報・ログアウト */}
-        <div className="relative group font-bold text-xs text-gray-600 px-4 py-3 bg-white rounded shadow-sm">
-          <span className="block">🔑 {user?.fullName} さん</span>
+        <div className="relative group flex items-center font-medium text-xs text-gray-600 px-3 bg-gray-50">
+          <span>🔑 {user?.fullName}</span>
           <button
             onClick={handleLogout}
-            className="absolute right-2 top-3 font-bold text-gray-600 text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+            className="ml-3 font-medium text-gray-600 text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-200"
           >
             🔒 Log out
           </button>
